@@ -28,6 +28,24 @@ fred.homePlanet = "Mars"
 Fix the class definition for `Giant` in the space below so that it **does** work:
 
 
+
+this code will not work because the variable "homePlanet" is declared as a constant which cant be mutated.  In order to give homePlanet a new value it needs to be decalred with the key word "var" instead of let
+class Giant {
+var name: String = "Fred"
+var weight: Double = 340.0
+var homePlanet: String = "Earth"
+}
+
+let fred = Giant()
+
+fred.name = "Brick"
+fred.weight = 999.2
+fred.homePlanet = "Mars"
+
+
+
+
+
 ## Question 2
 
 Take a look at this struct that represents an alien:
@@ -52,6 +70,25 @@ bilbo.homePlanet = "Saturn"
 Change the declaration of `bilbo` so that the above three lines of code **do** work:
 
 
+
+this code will not work because the variable "bilbo" is declared as a constant which cant be mutated.  In order to give bilbo new values it needs to be decalred with the key word "var" instead of let
+
+struct Alien {
+var name: String
+var height: Double
+var homePlanet: String
+}
+var bilbo = Alien(name: "Bilbo", height: 1.67, homePlanet: "Venus")
+
+bilbo.name = "Jake"
+bilbo.height = 1.42
+bilbo.homePlanet = "Saturn"
+
+
+
+
+
+
 ## Question 3
 
 Consider this bit of code that uses the `Giant` class:
@@ -66,6 +103,29 @@ jason.name = "Jason"
 What will the value of `edgar.name` be after those three lines of code are run? What will the value of `jason.name` be? Why?
 
 
+
+//edgar.name will be = edgar
+//jason.name will be = Jason
+//edgar gets initally set to Giant making edgar.name = "fred"; this is then changed by edgar.name = "edgar"
+//jason gets initally set to edgar making jason.name = "edgar"; this is then changed by jason.name = "Jason"
+
+class Giant {
+var name: String = "Fred"
+var weight: Double = 340.0
+var homePlanet: String = "Earth"
+}
+
+let edgar = Giant()
+edgar.name = "edgar"
+let jason = edgar
+jason.name = "Jason"
+
+
+
+
+
+
+
 ## Question 4
 
 Given this bit of code that uses the `Alien` struct:
@@ -77,6 +137,26 @@ charlesFromJupiter.homePlanet = "Jupiter"
 ```
 
 What will the value of `charles.homePlanet` be after the above code run? What about the value of `charlesFromJupiter.homePlanet`? Why?
+
+
+
+//charles.homePlanet will be = "Pluto"
+//charlesFromJupiter.homePlanet will be = "Jupiter"
+//charles gets initally set to Alien making charles.homePlanet = "Pluto"
+//charlesFromJupiter gets initally set to charles making charlesFromJupiter.homePlanet = "Pluto"; this is then changed with charlesFromJupiter.homePlanet = "Jupiter" making charlesFromJupiter.homePlanet will be = "Jupiter"
+
+
+struct Alien {
+var name: String
+var height: Double
+var homePlanet: String
+}
+var charles = Alien(name: "Charles", height: 2.25, homePlanet: "Pluto")
+var charlesFromJupiter = charles
+charlesFromJupiter.homePlanet = "Jupiter"
+
+
+
 
 
 ## Question 5
@@ -113,6 +193,34 @@ joeAccount.withdraw(50.0)
 What will the value of `joeAccount.balance` be after the above code runs? What about the value of `joeOtherAccount.balance`? Why?
 
 
+
+//since the functions below are nested in the struct "BankAccount" in order to change the value of balance through thta function the function must be declared with the keyword "mutating"
+struct BankAccount {
+var owner: String
+var balance: Double
+
+mutating func deposit(_ amount: Double) {
+balance += amount
+}
+
+mutating func withdraw(_ amount: Double) {
+balance -= amount
+}
+}
+
+
+//the value of joeOtherAccount.balance will be $100 because when it is created it is set to joeAccount which was itself initialieed using the argument balance: and the parameter 100.00.
+//the value of joeAccount.balance will be 50.00 since in the last line of code joeAccount.withdraw(50.0) reduces the balance from 100.00 to 50.00
+var joeAccount = BankAccount(owner: "Joe", balance: 100.0)
+var joeOtherAccount = joeAccount
+joeAccount.withdraw(50.0)
+print(joeOtherAccount.balance)
+
+
+
+
+
+
 ## Question 6
 
 a. Write a struct called `Person` that has 3 properties of type `String`: a first name, a last name and a middle name. Have the middle name be optional. Create 2 instances of a `Person`, one with a middle name and one without. Print one of their first names.
@@ -121,12 +229,60 @@ a. Write a struct called `Person` that has 3 properties of type `String`: a firs
 b. Write a method in `Person` called `fullName` that will return a formatted string of an instance's full name. Call this method on both the instances you created in part a.
 
 
+
+
+
+struct Person {
+var firstName: String
+var middleName: String?
+var lastName = String()
+
+func FullName() -> String {
+let nilCoalMiddle = middleName ?? ""
+return "\(firstName) \(nilCoalMiddle) \(lastName)"
+}
+}
+
+
+var person1 = Person(firstName: "Ian", middleName: "Thomas", lastName: "Cervone")
+var person2 = Person(firstName: "Natalia", middleName: nil, lastName: "Padilla")
+
+print(person1.FullName())
+
+
+
+
+
 ## Question 7
 
 a. Create a struct called `Book` that has properties `title`, `author` and `rating`, of type `String`, `String`, and `Double` respectively. Create some instances of `Book`.
 
 
 b. Add a method to `Book` called `isGood` that returns `true` if its rating is greater than or equal to 7
+
+
+
+
+struct Book {
+var title = String()
+var author = String()
+var rating = Double()
+func isGood(rating: Double) -> Bool {
+if rating > 7.0 {
+return true
+} else {
+return false
+}
+}
+}
+
+var ianStory = Book(title: "Ian's Bedtime Stories", author: "Ian Cervone", rating: 10.0)
+
+print(ianStory.isGood(rating: ianStory.rating))
+
+
+
+
 
 
 ## Question 8
@@ -197,6 +353,76 @@ e. Add a type property called `count` that keeps track of how many dogs have bee
 `Dog.count //returns 4`
 
 
+
+
+
+class Dog {
+var name = String("dog")
+var breed = String("unknown")
+var mood = String("calm")
+var hungry = Bool(false)
+
+func playFetch() {
+hungry = true
+mood = "playful"
+print("Ruff!")
+}
+
+func feed() {
+if hungry == true {
+hungry = false
+print("Woof")
+} else {
+if hungry == false {
+print("the dog does not look hungry")
+}
+}
+}
+func toString () -> String {
+return "Name: \(name) \nBreed: \(breed) \nMood: \(mood)"
+}
+}
+
+
+var dog1 = Dog()
+print(dog1.name)
+print(dog1.breed)
+print(dog1.mood)
+print(dog1.hungry)
+
+var dog2 = Dog()
+dog2.name = "Rheet"
+dog2.breed = "English Setter"
+dog2.mood = "excited"
+dog2.hungry = false
+
+dog2.playFetch()
+print(dog2.mood)
+print(dog2.hungry)
+
+var dog3 = Dog()
+dog3.name = "Partner"
+dog3.breed = "Golden Retriever"
+dog3.mood = "thoughtful"
+dog3.hungry = true
+
+dog3.feed()
+print(dog3.hungry)
+
+var dog4 = Dog()
+dog4.name = "Rascal"
+dog4.breed = "Golden Retriever"
+dog4.mood = "feeling pawesome"
+dog4.hungry = true
+print(dog4.toString())
+
+
+
+
+
+
+
+
 ## Question 9
 
 There are three common scales that are used to measure temperature: Celsius, Fahrenheit, and Kelvin:
@@ -218,6 +444,34 @@ tenDegreesCelsius.getFahrenheitTemp() //returns 50.0
 ```
 
 c. Give the `Celsius` struct a method called `isBelowFreezing` that returns a `Bool` (true if the temperature is below freezing).
+
+
+
+
+struct FreezingPoint {
+let fahrenheit: Double = 32.0
+let celsius: Double =  0.0
+let kelvin: Double = 273.0
+}
+
+struct Celsius {
+var celsius =  Double()
+func getFahrenheitTemp(celisus: Double) {
+let fahrenheit = 1.8 * celsius + 32
+let kelvin = celsius + 273.0
+print("temp is celsius = \(celsius)")
+print("temp in fahrenheit = \(fahrenheit)")
+print("temp in kelvin = \(kelvin)")
+}
+}
+
+
+var tenDegreesCelsius = Celsius(celsius: 10.0)
+tenDegreesCelsius.getFahrenheitTemp(celisus: 10.0)
+
+
+
+
 
 
 ## Question 10
